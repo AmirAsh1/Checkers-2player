@@ -45,8 +45,8 @@ class Board:
                 pygame.draw.rect(screen, WHITE, (row * SQUARE_SIZE, col * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
 
-    def get_piece(self, row, col):
-        return self.board[row][col]
+    #def get_piece(self, row, col):
+     #   return self.board[row][col]
 
     def create_board(self):
         # create the initial board of checkers (placing every checkers in its correct location)
@@ -70,6 +70,17 @@ class Board:
                 piece = self.board[row][col]
                 if piece != 0:
                     piece.draw_piece(screen)
+
+    def evaluate(self):
+        return (self.white_left - self.red_left) + (self.white_queens * 0.5 - self.red_queens * 0.5)
+
+    def get_all_pieces(self, color):
+        pieces = []
+        for row in self.board:
+            for piece in row:
+                if piece != 0 and piece.color == color:
+                    pieces.append(piece)
+        return pieces
 
     def move(self, piece, row, col):
         # switch the piece with the location it is moving to within the matrix(borad)
