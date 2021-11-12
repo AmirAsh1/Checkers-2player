@@ -2,7 +2,7 @@ from const import BLACK, ROWS, COLS, RED, WHITE, SQUARE_SIZE, CROWN, WHITE_WIN, 
 import pygame
 import board as b
 import game as g
-
+import minimax as mnmx
 
 # initialize pygame
 pygame.init()
@@ -10,7 +10,7 @@ pygame.init()
 # create the screen
 screen = pygame.display.set_mode((800, 800))
 pygame.display.set_caption('Checkers')
-icon = pygame.image.load('Checkers.png')
+icon = pygame.image.load('imgs/Checkers.png')
 pygame.display.set_icon(icon)
 # white_tile = obj.Tile('white_tile.png', 0, 0)
 # brown_tile = obj.Tile('brown_tile.png', 0, 0)
@@ -36,11 +36,12 @@ def main():
     while running:
         clock.tick(60)
 
-        if game.winner() is not None:
-            if game.winner() == RED:
-                screen.blit(RED_WIN, (0, 0))
-            if game.winner() == WHITE:
-                screen.blit(WHITE_WIN, (0, 0))
+        # calls the ai for WHITE's turn instead of player input
+        if game.turn == WHITE:
+            value, new_board = mnmx.minimax(game.get_board(), 3, WHITE, game)
+            game.ai_move(new_board)
+
+
 
         # exit loop for pygame window
         for event in pygame.event.get():
